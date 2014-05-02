@@ -10,9 +10,16 @@
 
 WEBROOT="/webroot"
 LOCALSTORE="/backups"
-DATE="$(date +%Y-%m-%d)"
 MYSQLUSER="backup"
 MYSQLPASSWORD=`cat /root/.mysqlbackuppw`
+REMOTEHOST="fs1.codefi.re"
+REMOTEUSER="anthrax"
+REMOTEDIRECTORY="/home/anthrax/storage/backups"
+YEAR="$(date +%Y)"
+MONTH="$(date +%m)"
+DAY="$(date +%d)"
+DATE="$YEAR-$MONTH-$DAY"
+
 
 # start with the files
 echo "$(date +"%D %r") - Beginning webroot tarball"
@@ -38,5 +45,20 @@ tar -czf $LOCALSTORE/backup_$DATE.tar.gz $LOCALSTORE/webroot-backups_$DATE.tar.g
 rm -f $LOCALSTORE/*.$DATE.sql
 rm -f $LOCALSTORE/*-backups_$DATE.tar.gz
 
+echo "$(date +"%D %r") - Local clean up Complete!"
+
+# Time to copy onto redundant storage on another host
+# first we need to do some testing to see if the folders we need exist
+# first the year
+echo "$(date +"%D %r") - Creating Remote Backup Directory"
+ssh $REMOTEUSER@$REMOTEHOST << EOF
+if [ -d "$REMOTEDIRECTORY/$YEAR/$MONTH/$DAY" ]; then
+mkdir -p $REMOTEDIRECTORY/$YEAR/$MONTH/$DAY
+fi
+EOF
+echo "$(date +"%D %r") - Remote Backup Directory Created"
+
+echo "$(date +"%D %r") - Begin rsync of backup to remote host"
+rsync -azh $LOCALSTORE/backup_$DATE.tar.gz $REMOTEUSER@$REMOTEHOST:$REMOTEDIRECTORY/$YEAR/$MONTH/$DAY/ && echo "$(date +"%D %r") - rsync completed sucessfuly" || echo "$(date ="%D %r") - rsync failed"
+
 echo "$(date +"%D %r") - Backup Complete!"
-# Done!
