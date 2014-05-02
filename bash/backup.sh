@@ -61,7 +61,7 @@ if (ssh $REMOTEUSER@$REMOTEHOST "! [ -d $REMOTEDIRECTORY/$YEAR/$MONTH ]"); then
 fi
 if (ssh $REMOTEUSER@$REMOTEHOST "! [ -d $REMOTEDIRECTORY/$YEAR/$MONTH/$DAY ]"); then
         ssh $REMOTEUSER@$REMOTEHOST "mkdir $REMOTEDIRECTORY/$YEAR/$MONTH/$DAY"
-        echo "$(date +"%D %r") - Created $REMOTEDIRECTORY/$YEAR/$MONT$REMOTEDIRECTORY/$YEAR/$MONTH/$DAYY directory on remote host"
+        echo "$(date +"%D %r") - Created $REMOTEDIRECTORY/$YEAR/$MONTH/$DAY directory on remote host"
 fi
 echo "$(date +"%D %r") - Remote Backup Directory Created"
 
