@@ -48,21 +48,9 @@ rm -f $LOCALSTORE/*-backups_$DATE.tar.gz
 echo "$(date +"%D %r") - Local clean up Complete!"
 
 # Time to copy onto redundant storage on another host
-# first we need to do some testing to see if the folders we need exist
-# first the year
-echo "$(date +"%D %r") - Creating Remote Backup Directory"
-if (ssh $REMOTEUSER@$REMOTEHOST "! [ -d $REMOTEDIRECTORY/$YEAR ]"); then
-	ssh $REMOTEUSER@$REMOTEHOST "mkdir $REMOTEDIRECTORY/$YEAR"
-	echo "$(date +"%D %r") - Created $REMOTEDIRECTORY/$YEAR directory on remote host"
-fi
-if (ssh $REMOTEUSER@$REMOTEHOST "! [ -d $REMOTEDIRECTORY/$YEAR/$MONTH ]"); then
-        ssh $REMOTEUSER@$REMOTEHOST "mkdir $REMOTEDIRECTORY/$YEAR/$MONTH"
-        echo "$(date +"%D %r") - Created $REMOTEDIRECTORY/$YEAR/$MONTH directory on remote host"
-fi
-if (ssh $REMOTEUSER@$REMOTEHOST "! [ -d $REMOTEDIRECTORY/$YEAR/$MONTH/$DAY ]"); then
-        ssh $REMOTEUSER@$REMOTEHOST "mkdir $REMOTEDIRECTORY/$YEAR/$MONTH/$DAY"
-        echo "$(date +"%D %r") - Created $REMOTEDIRECTORY/$YEAR/$MONTH/$DAY directory on remote host"
-fi
+# gotta make the directory
+
+ssh $REMOTEUSER@$REMOTEHOST "mkdir -p $REMOTEDIRECTORY/$YEAR/$MONTH/$DAY" || echo "$(date +"%D %r") - couldn't make remote directory"
 echo "$(date +"%D %r") - Remote Backup Directory Created"
 
 echo "$(date +"%D %r") - Begin rsync of backup to remote host"
