@@ -27,7 +27,7 @@ tar -czPf $LOCALSTORE/webroot-backups_$DATE.tar.gz $WEBROOT && echo "$(date +"%D
 # finished files
 
 # now to the database
-for i in $(echo 'SHOW DATABASES;' | mysql -u $MYSQLUSER -p$MYSQLPASSWORD | grep -v '^Database$' | grep -v 'information_schema')
+for i in $(echo 'SHOW DATABASES;' | mysql -u $MYSQLUSER -p$MYSQLPASSWORD | grep -v '^Database$' | grep -v 'information_schema' | grep -v 'performance_schema' | grep -v 'mysql')
 do
 	echo "$(date +"%D %r") - beginning dump of $i"
 	mysqldump -u $MYSQLUSER -p$MYSQLPASSWORD $i > $LOCALSTORE/$i.$DATE.sql && echo "$(date +"%D %r") - finished dump of $i" || echo "$(date +"%D %r") - dump of $i failed"
