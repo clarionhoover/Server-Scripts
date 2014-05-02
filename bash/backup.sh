@@ -38,5 +38,5 @@ tar -czf $LOCALSTORE/backup_$DATE.tar.gz $LOCALSTORE/webroot-backups_$DATE.tar.g
 rm -f $LOCALSTORE/*.$DATE.sql
 rm -f $LOCALSTORE/*-backups_$DATE.tar.gz
 
-echo "$(date ="%D %r") - Backup Complete!"
+echo "$(date +"%D %r") - Backup Complete!"
 # Done!
