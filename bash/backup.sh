@@ -52,8 +52,14 @@ echo "$(date +"%D %r") - Local clean up Complete!"
 # first the year
 echo "$(date +"%D %r") - Creating Remote Backup Directory"
 ssh $REMOTEUSER@$REMOTEHOST << EOF
-if [ -d "$REMOTEDIRECTORY/$YEAR/$MONTH/$DAY" ]; then
-mkdir -p $REMOTEDIRECTORY/$YEAR/$MONTH/$DAY
+if [ -d "$REMOTEDIRECTORY/$YEAR" ]; then
+mkdir $REMOTEDIRECTORY/$YEAR
+fi
+if [ -d "$REMOTEDIRECTORY/$YEAR/$MONTH" ]; then
+mkdir $REMOTEDIRECTORY/$YEAR/$MONTH
+fi
+if [ -d "$REMOTDIRECTORY/$YEAR/$MONTH/$DAY" ]; then
+mkdir $REMOTEDIRECTORY/$YEAR/$MONTH/$DAY
 fi
 EOF
 echo "$(date +"%D %r") - Remote Backup Directory Created"
