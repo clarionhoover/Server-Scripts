@@ -54,6 +54,6 @@ ssh $REMOTEUSER@$REMOTEHOST "mkdir -p $REMOTEDIRECTORY/$YEAR/$MONTH/$DAY" || ech
 echo "$(date +"%D %r") - Remote Backup Directory Created"
 
 echo "$(date +"%D %r") - Begin rsync of backup to remote host"
-rsync -azh $LOCALSTORE/backup_$DATE.tar.gz $REMOTEUSER@$REMOTEHOST:$REMOTEDIRECTORY/$YEAR/$MONTH/$DAY/ && echo "$(date +"%D %r") - rsync completed sucessfuly" || echo "$(date +"%D %r") - rsync failed"
+rsync -azh $LOCALSTORE/backup_$DATE.tar.gz $REMOTEUSER@$REMOTEHOST:$REMOTEDIRECTORY/$YEAR/$MONTH/$DAY/ && echo "$(date +"%D %r") - rsync completed sucessfuly" && rm $LOCALSTORE/backup_$DATE.tar.gz || echo "$(date +"%D %r") - rsync failed"
 
 echo "$(date +"%D %r") - Backup Complete!"
